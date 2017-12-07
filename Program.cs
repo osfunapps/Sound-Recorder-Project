@@ -9,23 +9,26 @@ using WindowsFormsApp1.project;
 using Sound_Recorder_Project.program;
 using Sound_Recorder_Project.program.tools;
 using Sound_Recorder_Project.program.tools.keyboardhook;
+using System.Diagnostics;
 
 namespace Sound_Recorder_Project
 {
     static class Program
     {
         private static RecordingForm recordingForm;
-        private static string INITIATED = "program initiated :)\n";
-        
+
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
-              MessageBox.Show(INITIATED, Logger.TITLE);
-              AppCoordinator.RecordLog += INITIATED;
 
+            String thisprocessname = Process.GetCurrentProcess().ProcessName;
+        if (Process.GetProcesses().Count(p => p.ProcessName == thisprocessname) > 1)
+            return;   
+            
               //visualize stuff
               Application.EnableVisualStyles();
               Application.SetCompatibleTextRenderingDefault(false);
@@ -39,7 +42,7 @@ namespace Sound_Recorder_Project
 
             AppCoordinator appCoordinator = new AppCoordinator();
               appCoordinator.Coordinate();
-      
+
 
             ///run action listener
             /*ActionListener actionListener = new ActionListener();
@@ -48,7 +51,7 @@ namespace Sound_Recorder_Project
             KeyboardIntercepter.Hook();
             */
 
-            
+
 
         }
     }
