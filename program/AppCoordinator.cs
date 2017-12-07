@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp1.project;
 using Sound_Recorder_Project.program;
@@ -8,16 +11,18 @@ using Sound_Recorder_Project.Properties;
 
 namespace Sound_Recorder_Project
 {
-    internal class AppCoordinator : SoundManager.RecordCallback
+    internal class AppCoordinator : SoundManager.RecordCallback, ITrayCallback
     {
 
         //instances
         private MemoryAllocator memoryAllocator;
         private SoundManager soundManager;
         private DateFolderCreator dateFolderCreatoer;
+        private TrayManager _trayManager;
 
         //strings
         public static string LOG_TITLE = "Record log";
+        public static string RecordLog { get; set; }
 
         public AppCoordinator()
         {
@@ -29,11 +34,23 @@ namespace Sound_Recorder_Project
 
         public void Coordinate()
         {
+
             if (Settings.Default.recordsPath.Equals(""))
             {
                 MyUtils.ShowSettingsForm();
                 return;
             }
+
+            var myThread = new Thread(delegate ()
+            {
+                _trayManager = new TrayManager(this);
+                _trayManager.CreateNotifyicon(null);
+
+                Application.Run();
+            });
+
+            myThread.SetApartmentState(ApartmentState.STA);
+            myThread.Start();
 
             HandleUnExistsRecordsDir();
             double recordsDir = PathSizeMeasurer.GetPathSize(Settings.Default.recordsPath);
@@ -55,6 +72,26 @@ namespace Sound_Recorder_Project
             Coordinate();
         }
 
-        public static string RecordLog { get; set; }
+        //tray methods
+        public void OnExitClicked()
+        {
+            MyUtils.ExitProgram();
+        }
+
+        public void OnShowClicked()
+        {
+            MyUtils.ShowSettingsForm();
+        }
+
+        public void OnGoToPathClicked()
+        {
+            String moshe = @Directory.GetCurrentDirectory();
+            Process.Start(moshe);
+        }
+
+        public void OnSettingsClicked()
+        {
+            MyUtils.ShowSettingsForm();
+        }
     }
 }

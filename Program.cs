@@ -24,13 +24,12 @@ namespace Sound_Recorder_Project
         [STAThread]
         static void Main()
         {
-
             String thisprocessname = Process.GetCurrentProcess().ProcessName;
         if (Process.GetProcesses().Count(p => p.ProcessName == thisprocessname) > 1)
-            return;   
-            
-              //visualize stuff
-              Application.EnableVisualStyles();
+            return;
+
+            //visualize stuff
+            Application.EnableVisualStyles();
               Application.SetCompatibleTextRenderingDefault(false);
 
             KeyboardActionListener keyboardActionListener = new KeyboardActionListener();
