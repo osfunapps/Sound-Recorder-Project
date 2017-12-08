@@ -31,16 +31,13 @@ namespace Sound_Recorder_Project
             this.soundManager = new SoundManager(this);
         }
 
-
-        public void Coordinate()
+        public void PrepareCoordination()
         {
-
             if (Settings.Default.recordsPath.Equals(""))
             {
                 MyUtils.ShowSettingsForm();
                 return;
             }
-
             var myThread = new Thread(delegate ()
             {
                 _trayManager = new TrayManager(this);
@@ -51,6 +48,18 @@ namespace Sound_Recorder_Project
 
             myThread.SetApartmentState(ApartmentState.STA);
             myThread.Start();
+            Coordinate();
+        }
+
+        public void Coordinate()
+        {
+
+            if (Settings.Default.recordsPath.Equals(""))
+            {
+                MyUtils.ShowSettingsForm();
+                return;
+            }
+
 
             HandleUnExistsRecordsDir();
             double recordsDir = PathSizeMeasurer.GetPathSize(Settings.Default.recordsPath);
@@ -87,6 +96,11 @@ namespace Sound_Recorder_Project
         {
             String moshe = @Directory.GetCurrentDirectory();
             Process.Start(moshe);
+        }
+
+        public void OnGoToTaskSchedluerClicked()
+        {
+            Process.Start("taskschd.msc");
         }
 
         public void OnSettingsClicked()

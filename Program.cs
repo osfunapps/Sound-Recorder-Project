@@ -40,7 +40,7 @@ namespace Sound_Recorder_Project
             });
 
             AppCoordinator appCoordinator = new AppCoordinator();
-              appCoordinator.Coordinate();
+              appCoordinator.PrepareCoordination();
 
 
             ///run action listener

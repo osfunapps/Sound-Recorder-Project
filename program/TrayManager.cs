@@ -15,6 +15,7 @@ namespace Sound_Recorder_Project
         private ITrayCallback _callback;
         private MenuItem pathItem;
         private MenuItem settingsItem;
+        private MenuItem taskItem;
 
         public TrayManager(ITrayCallback callback)
         {
@@ -37,9 +38,11 @@ namespace Sound_Recorder_Project
             SetExitItem();
             SetOpenPathItem();
             SetSettingsItem();
+            SetTaskSchedulerItem();
             // Initialize contextMenu1
             this.contextMenu1.MenuItems.Add(settingsItem);
             this.contextMenu1.MenuItems.Add(pathItem);
+            this.contextMenu1.MenuItems.Add(taskItem);
             this.contextMenu1.MenuItems.Add(exitItem);
 
             // Create the NotifyIcon.
@@ -84,9 +87,24 @@ namespace Sound_Recorder_Project
             this.exitItem = new System.Windows.Forms.MenuItem();
 
             // Initialize exitItem
-            this.exitItem.Index = 2;
+            this.exitItem.Index = 3;
             this.exitItem.Text = "Exit";
             this.exitItem.Click += new System.EventHandler(this.exitItem_Click);
+        }
+
+        private void SetTaskSchedulerItem()
+        {
+            this.taskItem = new System.Windows.Forms.MenuItem();
+
+            // Initialize exitItem
+            this.taskItem.Index = 2;
+            this.taskItem.Text = "Open Task Scheduler";
+            this.taskItem.Click += new System.EventHandler(this.taskItem_Click);
+        }
+
+        private void taskItem_Click(object sender, EventArgs e)
+        {
+            _callback.OnGoToTaskSchedluerClicked();
         }
 
         private void SetSettingsItem()
@@ -124,5 +142,6 @@ namespace Sound_Recorder_Project
         void OnShowClicked();
         void OnGoToPathClicked();
         void OnSettingsClicked();
+        void OnGoToTaskSchedluerClicked();
     }
 }
