@@ -1,6 +1,8 @@
 # Sound-Recorder-Project
-a sound recorder software
+A stealthy sound recorder project with elastic cache and optimized sound preferences.
 
 Keys:
+
 Main configuration window: ctrl + shift + f8 
-see if recording: ctrl + shift + R
+
+Watch recording status: ctrl + shift + R
